@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAKAN - Pesanan</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Styling for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* HAKAN Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        /* Card for food items */
+        .food-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .food-item .name {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .food-item .price {
+            font-size: 1rem;
+            color: #007bff;
+        }
+
+        .food-item .quantity {
+            display: flex;
+            align-items: center;
+        }
+
+        .food-item .quantity input {
+            width: 50px;
+            height: 30px;
+            text-align: center;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+
+        .food-item button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .food-item button:hover {
+            background-color: #218838;
+        }
+
+        /* Order summary */
+        .order-summary {
+            margin-top: 40px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-summary h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .order-summary .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+        }
+
+        .order-summary .total span {
+            font-weight: bold;
+        }
+
+        /* Request input section */
+        .request-input {
+            margin-top: 20px;
+        }
+
+        .request-input label {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .request-input textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        /* Payment options */
+        .payment-options {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .payment-options .payment-btn {
+            padding: 10px 20px;
+            background-color: #17a2b8;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .payment-options .payment-btn i {
+            margin-right: 8px;
+        }
+
+        .payment-options .payment-btn:hover {
+            background-color: #138496;
+        }
+
+        /* Action buttons */
+        .action-buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .action-buttons .btn {
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .action-buttons .btn-primary {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .action-buttons .btn-primary:hover {
+            background-color: #218838;
+        }
+
+        .action-buttons .btn-secondary {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .action-buttons .btn-secondary:hover {
+            background-color: #e0a800;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+        }
+        .payment-btn.selected, .action-buttons .btn.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .payment-btn.selected, .action-buttons .btn.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .payment-qr-codes {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .payment-qr {
+            text-align: center;
+            width: 48%;
+        }
+
+        .qr-code-img {
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .payment-qr p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>HAKAN</h1>
+        </div>
+
+        <!-- Tombol Kembali -->
+        <div class="back-button">
+            <button onclick="goBack()" class="btn btn-secondary">Kembali</button>
+        </div>
+
+        <!-- Food List -->
+        <div class="food-item">
+            <div class="name">Seblak Bu Yatmi</div>
+            <div class="price">25.000</div>
+            <div class="quantity">
+                <input type="number" id="seblak-quantity" value="0" min="0">
+                <button onclick="addItem('seblak', 25000)">Tambah</button>
+            </div>
+        </div>
+
+        <div class="food-item">
+            <div class="name">Bakso Pak Anas</div>
+            <div class="price">20.000</div>
+            <div class="quantity">
+                <input type="number" id="bakso-quantity" value="0" min="0">
+                <button onclick="addItem('bakso', 20000)">Tambah</button>
+            </div>
+        </div>
+
+        <div class="food-item">
+            <div class="name">Pancong Racing</div>
+            <div class="price">15.000</div>
+            <div class="quantity">
+                <input type="number" id="pancong-quantity" value="0" min="0">
+                <button onclick="addItem('pancong', 15000)">Tambah</button>
+            </div>
+        </div>
+
+        <div class="food-item">
+            <div class="name">Indomie Goreng</div>
+            <div class="price">10.000</div>
+            <div class="quantity">
+                <input type="number" id="indomie-quantity" value="0" min="0">
+                <button onclick="addItem('indomie', 10000)">Tambah</button>
+            </div>
+        </div>
+
+        <div class="food-item">
+            <div class="name">Hot Dog mank adi</div>
+            <div class="price">18.000</div>
+            <div class="quantity">
+                <input type="number" id="hotdog-quantity" value="0" min="0">
+                <button onclick="addItem('hotdog', 18000)">Tambah</button>
+            </div>
+        </div>
+
+        <div class="food-item">
+            <div class="name">Burger bu sugeng</div>
+            <div class="price">22.000</div>
+            <div class="quantity">
+                <input type="number" id="burger-quantity" value="0" min="0">
+                <button onclick="addItem('burger', 22000)">Tambah</button>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h3>Ringkasan Pesanan</h3>
+            <div class="total">
+                <span>Total Pesanan</span>
+                <span id="total-price">0</span>
+            </div>
+            <div class="total">
+                <span>Total Item</span>
+                <span id="total-items">0</span>
+            </div>
+        </div>
+
+        <!-- Request Input -->
+        <div class="request-input">
+            <label for="request">Kolom Request:</label>
+            <textarea id="request" placeholder="Tulis permintaan khusus di sini..."></textarea>
+        </div>
+
+        <div class="payment-options">
+            <button class="payment-btn" id="dana" onclick="togglePayment('dana')"><i class="fab fa-dana"></i> Dana</button>
+            <button class="payment-btn" id="shopeepay" onclick="togglePayment('shopeepay')"><i class="fab fa-shopify"></i> ShopeePay</button>
+        </div>
+
+        <div class="payment-qr-codes">
+            <div id="dana-qr" class="payment-qr">
+                <img src="../assets/QR.png" alt="QR Code Dana" class="qr-code-img">
+                <p>QR Code Dana</p>
+            </div>
+            <div id="shopeepay-qr" class="payment-qr">
+                <img src="../assets/QR.png" alt="QR Code ShopeePay" class="qr-code-img">
+                <p>QR Code ShopeePay</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="langsung" onclick="toggleAction('langsung')">Langsung</button>
+            <button class="btn btn-secondary" id="atur-waktu" onclick="toggleAction('atur-waktu')">Atur Waktu</button>
+        </div>
+
+        <!-- Pay Button -->
+        <div class="text-center mt-4">
+            <button class="btn btn-primary" id="pay-btn" onclick="pay()">Bayar</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 HAKAN</p>
+    </footer>
+
+    <script>
+        let totalItems = 0;
+        let totalPrice = 0;
+
+        function addItem(item, price) {
+            const quantity = document.getElementById(`${item}-quantity`).value;
+            totalItems += parseInt(quantity);
+            totalPrice += parseInt(quantity) * price;
+
+            // Update totals
+            document.getElementById('total-items').textContent = totalItems;
+            document.getElementById('total-price').textContent = totalPrice.toLocaleString();
+        }
+
+        // For now, just a simple console log to show the button functionality
+        document.getElementById('pay-btn').addEventListener('click', function() {
+            alert('Pembayaran sedang diproses!');
+        });
+
+        
+
+        // Function for "Back" button
+        function goBack() {
+            window.history.back(); // Navigasi kembali ke halaman sebelumnya
+        }
+    </script>
+    <script>
+        let selectedPayments = [];
+        let selectedActions = [];
+
+        // Fungsi untuk memilih pembayaran
+        function togglePayment(payment) {
+            // Cek jika tombol sudah dipilih
+            const index = selectedPayments.indexOf(payment);
+            if (index > -1) {
+                selectedPayments.splice(index, 1);
+                document.getElementById(payment).classList.remove("selected");
+            } else {
+                if (selectedPayments.length < 2) {
+                    selectedPayments.push(payment);
+                    document.getElementById(payment).classList.add("selected");
+                }
+            }
+            validateChoices();
+        }
+
+        // Fungsi untuk memilih aksi
+        function toggleAction(action) {
+            const index = selectedActions.indexOf(action);
+            if (index > -1) {
+                selectedActions.splice(index, 1);
+                document.getElementById(action).classList.remove("selected");
+            } else {
+                if (selectedActions.length < 2) {
+                    selectedActions.push(action);
+                    document.getElementById(action).classList.add("selected");
+                }
+            }
+            validateChoices();
+        }
+
+        // Validasi kombinasi pilihan
+        function validateChoices() {
+            const validCombinations = [
+                ['dana', 'langsung'],
+                ['dana', 'atur-waktu'],
+                ['shopeepay', 'langsung'],
+                ['shopeepay', 'atur-waktu']
+            ];
+
+            let isValid = false;
+            // Cek apakah kombinasi yang dipilih valid
+            validCombinations.forEach(combination => {
+                if (combination.every(item => selectedPayments.includes(item) || selectedActions.includes(item))) {
+                    isValid = true;
+                }
+            });
+
+            // Enable or disable the "Bayar" button based on validity
+            document.getElementById('pay-btn').disabled = !isValid;
+        }
+
+        // Fungsi untuk menangani pembayaran
+        function pay() {
+            alert('Pembayaran sedang diproses!');
+        }
+
+        // Fungsi untuk "Back" button
+        function goBack() {
+            window.history.back(); // Navigasi kembali ke halaman sebelumnya
+        }
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

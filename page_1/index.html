@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Role - HAKAN</title>
+  <style>
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f2ebe5;
+    }
+    .role-selection-container {
+      background-color: #fff;
+      padding: 30px;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.8rem;
+      color: #c05a1a;
+      margin-bottom: 20px;
+    }
+    .role-options {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+    }
+    .role-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 45%;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .role-option.selected {
+      border-color: #c05a1a;
+      background-color: #f9e4d0;
+      color: #c05a1a;
+    }
+    .role-option i {
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+    .role-option span {
+      font-size: 1rem;
+    }
+    .next-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .next-btn {
+      width: 48%;
+      padding: 10px;
+      background-color: #c05a1a;
+      color: #fff;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-decoration: none;
+      text-align: center;
+    }
+    .next-btn:hover {
+      background-color: #a04917;
+    }
+    .back-btn {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      background-color: #777;
+      color: #fff;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .back-btn:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="role-selection-container">
+    <h1>LOGIN SEBAGAI : </h1>
+    <div class="role-options">
+      <div class="role-option" id="vendorOption" onclick="selectRole('vendor')">
+        <i class="fas fa-store"></i>
+        <span>Vendor</span>
+      </div>
+      <div class="role-option" id="customerOption" onclick="selectRole('customer')">
+        <i class="fas fa-user"></i>
+        <span>Pelanggan</span>
+      </div>
+    </div>
+    <div class="next-buttons">
+      <a href="../page_3/index.html" id="nextVendor" class="next-btn" style="display: none;">Next to Vendor</a>
+      <a href="../page_2/index.html" id="nextCustomer" class="next-btn" style="display: none;">Next to Customer</a>
+    </div>
+    <button class="back-btn" onclick="goBack()">Back</button>
+  </div>
+
+  <!-- FontAwesome Icon -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <script>
+    function selectRole(role) {
+      const vendorOption = document.getElementById("vendorOption");
+      const customerOption = document.getElementById("customerOption");
+      const nextVendor = document.getElementById("nextVendor");
+      const nextCustomer = document.getElementById("nextCustomer");
+
+      // Reset styles
+      vendorOption.classList.remove("selected");
+      customerOption.classList.remove("selected");
+
+      // Set selected style and show correct button
+      if (role === "vendor") {
+        vendorOption.classList.add("selected");
+        nextVendor.style.display = "inline-block";
+        nextCustomer.style.display = "none";
+      } else if (role === "customer") {
+        customerOption.classList.add("selected");
+        nextCustomer.style.display = "inline-block";
+        nextVendor.style.display = "none";
+      }
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</body>
+</html>
